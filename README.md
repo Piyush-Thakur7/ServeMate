@@ -1,0 +1,1 @@
+# ServeMate mobile`n`nThis repository hosts the ServeMate landing page and is prepared for GitHub Pages deployment.`n`n## Deployment`n`n1. In GitHub, enable Pages for branch `main` and folder `/ (root)`.`n2. Ensure `index.html` stays at the repository root.`n`n## Notes`n`n- `servemate.html` is kept as a reference copy.
