@@ -49,6 +49,16 @@ This project adds a backend to the ServeMate donation platform with user authent
    - Register/Login to access dashboard
    - Try making a donation to see the UPI interface
 
+## Vercel Deployment Notes
+
+This repo is configured to deploy the backend as a Node.js serverless function on Vercel.
+
+- `vercel.json` now routes all requests to `api/index.js`
+- `server.js` is exported as an app for both local and Vercel deployment
+- Add these environment variables in Vercel project settings:
+  - `MONGODB_URI`
+  - `JWT_SECRET`
+
 ## API Endpoints
 
 - `POST /api/auth/register` - Create account
