@@ -1,0 +1,28 @@
+{
+  "name": "servemate",
+  "version": "1.0.0",
+  "description": "ServeMate 🚀 - Small Contributions. Real Impact.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve .",
+    "test": "echo \"No tests configured\" && exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Piyush-Thakur7/ServeMATE.git"
+  },
+  "keywords": [
+    "volunteering",
+    "social-impact",
+    "community"
+  ],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Piyush-Thakur7/ServeMATE/issues"
+  },
+  "homepage": "https://github.com/Piyush-Thakur7/ServeMATE#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  }
+}
