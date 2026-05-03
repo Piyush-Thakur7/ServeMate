@@ -1789,75 +1789,11 @@
   }
 
   function loginAction() {
-    const email = document.getElementById('login-email').value;
-    const password = document.getElementById('login-password').value;
-
-    if (!email || !password) {
-      showToast('❌ Please fill in all fields');
-      return;
-    }
-
-    fetch('/api/auth/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        closeModal('auth-modal');
-        showPage('dashboard');
-        updateDashboard(data.user);
-        showToast('✅ Logged in successfully! Welcome back, ' + data.user.name + '.');
-      } else {
-        showToast('❌ ' + (data.message || 'Login failed'));
-      }
-    })
-    .catch(error => {
-      console.error('Login error:', error);
-      showToast('❌ Login failed. Please try again.');
-    });
+    showToast('ℹ️ Backend is not available. Login feature coming soon!');
   }
 
   function registerAction() {
-    const name = document.getElementById('register-name').value;
-    const email = document.getElementById('register-email').value;
-    const password = document.getElementById('register-password').value;
-    const city = document.getElementById('register-city').value;
-
-    if (!name || !email || !password) {
-      showToast('❌ Please fill in all required fields');
-      return;
-    }
-
-    fetch('/api/auth/register', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email, password, city })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-        closeModal('auth-modal');
-        showPage('dashboard');
-        updateDashboard(data.user);
-        showToast('✅ Account created successfully! Welcome, ' + data.user.name + '.');
-      } else {
-        showToast('❌ ' + (data.message || 'Registration failed'));
-      }
-    })
-    .catch(error => {
-      console.error('Register error:', error);
-      showToast('❌ Registration failed. Please try again.');
-    });
+    showToast('ℹ️ Backend is not available. Registration coming soon!');
   }
 
   function selectAmount(amt, btn) {
@@ -1911,39 +1847,7 @@
     const amt = custom ? parseInt(custom) : currentDonateAmount;
     const cause = document.getElementById('donate-cause').value;
 
-    fetch('/api/donations', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token
-      },
-      body: JSON.stringify({ cause, amount: amt })
-    })
-    .then(response => response.json())
-    .then(data => {
-      if (data.message === 'Donation successful') {
-        document.getElementById('success-amount').textContent = '₹' + amt;
-        document.getElementById('donate-step2').style.display = 'none';
-        document.getElementById('donate-step3').style.display = '';
-        
-        // Update user data in localStorage
-        const user = JSON.parse(localStorage.getItem('user') || '{}');
-        user.totalDonated = data.user.totalDonated;
-        user.donationsCount = data.user.donationsCount;
-        user.xp = data.user.xp;
-        user.level = data.user.level;
-        localStorage.setItem('user', JSON.stringify(user));
-        
-        updateDashboard(user);
-        showToast('✅ Payment successful! Thank you for making a difference.');
-      } else {
-        showToast('❌ ' + (data.message || 'Payment failed'));
-      }
-    })
-    .catch(error => {
-      console.error('Payment error:', error);
-      showToast('❌ Payment failed. Please try again.');
-    });
+    showToast('ℹ️ Donation feature coming soon with backend integration!');
   }
 
   function updateDashboard(user) {
