@@ -339,22 +339,41 @@
   }
   .proof-btn:hover { background: var(--blue-light); }
 
-  /* DONATION MODAL */
-  .amount-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .75rem; margin-bottom: 1rem; }
-  .amount-btn {
-    padding: .75rem; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
-    background: var(--bg); color: var(--text); font-family: 'Sora', sans-serif;
-    font-size: 1rem; font-weight: 700; cursor: pointer; transition: .2s;
+  /* UPI PAYMENT INTERFACE */
+  .upi-payment-screen { text-align: center; }
+  .upi-interface { max-width: 400px; margin: 0 auto; }
+  .upi-qr-section { margin-bottom: 2rem; }
+  .upi-qr-code { 
+    width: 200px; height: 200px; margin: 0 auto 1rem;
+    background: var(--bg); border: 2px solid var(--border);
+    border-radius: var(--radius); display: flex; align-items: center; justify-content: center;
   }
-  .amount-btn:hover, .amount-btn.active { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
-  .impact-preview { background: var(--blue-light); border-radius: var(--radius-sm); padding: 1rem; margin: 1rem 0; }
-  .impact-preview p { font-size: .88rem; color: var(--blue); font-weight: 500; }
-  .success-screen { text-align: center; padding: 1rem 0; }
-  .success-icon { font-size: 4rem; margin-bottom: 1rem; }
-  .success-screen h3 { font-size: 1.5rem; margin-bottom: .5rem; }
-  .success-screen p { color: var(--text2); font-size: .9rem; }
-  .confetti { animation: spin 1s linear infinite; display: inline-block; }
-  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .qr-placeholder { width: 160px; height: 160px; background: white; border-radius: 8px; position: relative; overflow: hidden; }
+  .qr-grid { width: 100%; height: 100%; background: #000; position: relative; }
+  .qr-corner { position: absolute; width: 20px; height: 20px; border: 3px solid #000; background: white; }
+  .qr-corner.tl { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .qr-corner.tr { top: 10px; right: 10px; border-left: none; border-bottom: none; }
+  .qr-corner.bl { bottom: 10px; left: 10px; border-right: none; border-top: none; }
+  .qr-pattern { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: #000; }
+  .qr-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2rem; color: white; z-index: 1; }
+  .upi-details { background: var(--bg3); border-radius: var(--radius); padding: 1.25rem; margin-bottom: 1.5rem; }
+  .upi-amount-display, .upi-payee, .upi-id { display: flex; justify-content: space-between; align-items: center; margin-bottom: .75rem; font-size: .9rem; }
+  .upi-amount-display:last-child, .upi-payee:last-child, .upi-id:last-child { margin-bottom: 0; }
+  .amount-label, .payee-label, .upi-label { color: var(--text2); font-weight: 500; }
+  .amount-value { font-family: 'Sora', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blue); }
+  .payee-name, .upi-value { font-weight: 600; color: var(--text); }
+  .upi-apps { margin-bottom: 1.5rem; }
+  .app-buttons { display: grid; grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  .upi-app-btn { 
+    display: flex; align-items: center; gap: .5rem; padding: .75rem 1rem;
+    border: 1.5px solid var(--border); border-radius: var(--radius-sm);
+    background: var(--bg); color: var(--text); cursor: pointer;
+    transition: all .2s; font-size: .85rem; font-weight: 600;
+  }
+  .upi-app-btn:hover { border-color: var(--blue); background: var(--blue-light); }
+  .app-icon { font-size: 1.2rem; }
+  .upi-note { background: var(--orange-light); border: 1px solid var(--orange); border-radius: var(--radius-sm); padding: 1rem; margin-top: 1rem; }
+  .upi-note p { color: var(--orange); font-weight: 600; margin: 0; }
 
   /* TRANSPARENCY TIMELINE */
   .timeline { position: relative; padding-left: 2rem; }
@@ -721,6 +740,12 @@
     .logo-img-nav { width: 32px; height: 32px; }
 
     footer { padding: 1.75rem 1.25rem; }
+
+    /* UPI Mobile Styles */
+    .upi-qr-code { width: 150px; height: 150px; }
+    .qr-placeholder { width: 120px; height: 120px; }
+    .app-buttons { grid-template-columns: 1fr; }
+    .upi-app-btn { padding: .6rem .8rem; font-size: .8rem; }
   }
 
   @media (max-width: 480px) {
@@ -1536,15 +1561,16 @@
       <button class="tab-btn" onclick="switchAuthTab('register', this)">Register</button>
     </div>
     <div id="auth-login">
-      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="••••••••"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="login-email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="login-password" placeholder="••••••••"></div>
       <button class="btn btn-primary btn-full" onclick="loginAction()" style="margin-top:.5rem;">Login to ServeMate</button>
     </div>
     <div id="auth-register" style="display:none;">
-      <div class="form-group"><label>Full Name</label><input type="text" placeholder="Your full name"></div>
-      <div class="form-group"><label>Email Address</label><input type="email" placeholder="your@email.com"></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="Create a strong password"></div>
-      <button class="btn btn-primary btn-full" onclick="loginAction()" style="margin-top:.5rem;">Create Account</button>
+      <div class="form-group"><label>Full Name</label><input type="text" id="register-name" placeholder="Your full name"></div>
+      <div class="form-group"><label>Email Address</label><input type="email" id="register-email" placeholder="your@email.com"></div>
+      <div class="form-group"><label>Password</label><input type="password" id="register-password" placeholder="Create a strong password"></div>
+      <div class="form-group"><label>City (Optional)</label><input type="text" id="register-city" placeholder="Your city"></div>
+      <button class="btn btn-primary btn-full" onclick="registerAction()" style="margin-top:.5rem;">Create Account</button>
     </div>
   </div>
 </div>
@@ -1580,13 +1606,79 @@
       <div class="impact-preview" id="impact-preview">
         <p>🍱 ₹50 = <strong>5 meals</strong> for hungry children. Served by Sewa Foundation, Lucknow.</p>
       </div>
-      <button class="btn btn-primary btn-full btn-lg" onclick="showDonateSuccess()">Donate Now 🤝</button>
+      <button class="btn btn-primary btn-full btn-lg" onclick="showUPIPayment()">Donate Now 🤝</button>
     </div>
     <div id="donate-step2" style="display:none;">
+      <div class="upi-payment-screen">
+        <h2>UPI Payment</h2>
+        <p class="sub">Scan QR code or enter UPI ID to pay</p>
+        
+        <div class="upi-interface">
+          <div class="upi-qr-section">
+            <div class="upi-qr-code">
+              <div class="qr-placeholder">
+                <div class="qr-grid">
+                  <div class="qr-corner tl"></div>
+                  <div class="qr-corner tr"></div>
+                  <div class="qr-corner bl"></div>
+                  <div class="qr-pattern"></div>
+                  <div class="qr-center">📱</div>
+                </div>
+              </div>
+            </div>
+            <p style="text-align:center;font-size:.85rem;color:var(--text2);margin:.5rem 0;">Scan with any UPI app</p>
+          </div>
+          
+          <div class="upi-details">
+            <div class="upi-amount-display">
+              <span class="amount-label">Amount:</span>
+              <span class="amount-value" id="upi-amount">₹50</span>
+            </div>
+            <div class="upi-payee">
+              <span class="payee-label">Payee:</span>
+              <span class="payee-name">ServeMate Foundation</span>
+            </div>
+            <div class="upi-id">
+              <span class="upi-label">UPI ID:</span>
+              <span class="upi-value">servemate@upi</span>
+            </div>
+          </div>
+          
+          <div class="upi-apps">
+            <p style="font-size:.85rem;color:var(--text2);margin-bottom:.75rem;text-align:center;">Or pay using:</p>
+            <div class="app-buttons">
+              <button class="upi-app-btn" onclick="completeFakePayment()">
+                <span class="app-icon">📱</span>
+                <span class="app-name">Google Pay</span>
+              </button>
+              <button class="upi-app-btn" onclick="completeFakePayment()">
+                <span class="app-icon">💰</span>
+                <span class="app-name">PhonePe</span>
+              </button>
+              <button class="upi-app-btn" onclick="completeFakePayment()">
+                <span class="app-icon">💳</span>
+                <span class="app-name">Paytm</span>
+              </button>
+              <button class="upi-app-btn" onclick="completeFakePayment()">
+                <span class="app-icon">🏦</span>
+                <span class="app-name">BHIM UPI</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="upi-note">
+          <p style="font-size:.8rem;color:var(--text3);text-align:center;line-height:1.4;">
+            This is a demo payment interface. No real money will be charged.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div id="donate-step3" style="display:none;">
       <div class="success-screen">
         <div class="success-icon">🎉</div>
-        <h3>Donation Successful!</h3>
-        <p style="margin-bottom:1rem;">You donated <strong id="success-amount">₹50</strong> to <strong>Feed the Hungry</strong>.</p>
+        <h3>Payment Successful!</h3>
+        <p style="margin-bottom:1rem;">You paid <strong id="success-amount">₹50</strong> for <strong id="success-cause">Feed the Hungry</strong>.</p>
         <div class="badge badge-orange" style="margin:.5rem auto;display:inline-flex;">+10 XP Earned!</div>
         <p style="margin-top:1rem;font-size:.85rem;color:var(--text2);">You'll receive proof of work within 48 hours. Track it in your Dashboard.</p>
         <button class="btn btn-primary btn-full" style="margin-top:1.5rem;" onclick="closeModal('donate-modal');showPage('dashboard')">View in Dashboard</button>
@@ -1666,13 +1758,24 @@
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
-  function openAuthModal() { openModal('auth-modal'); }
+  function openAuthModal() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      // Already logged in, go to dashboard
+      showPage('dashboard');
+      return;
+    }
+    openModal('auth-modal');
+  }
   function openProofModal() { openModal('proof-modal'); return false; }
   function openNGORegModal() { openModal('ngo-modal'); }
 
   function openDonateModal(cause) {
+    // Reset all steps
     document.getElementById('donate-step1').style.display = '';
     document.getElementById('donate-step2').style.display = 'none';
+    document.getElementById('donate-step3').style.display = 'none';
+    
     if (cause) document.getElementById('donate-cause').value = cause;
     updateImpact();
     openModal('donate-modal');
@@ -1686,9 +1789,75 @@
   }
 
   function loginAction() {
-    closeModal('auth-modal');
-    showPage('dashboard');
-    showToast('✅ Logged in successfully! Welcome back, Piyush.');
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
+
+    if (!email || !password) {
+      showToast('❌ Please fill in all fields');
+      return;
+    }
+
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        closeModal('auth-modal');
+        showPage('dashboard');
+        updateDashboard(data.user);
+        showToast('✅ Logged in successfully! Welcome back, ' + data.user.name + '.');
+      } else {
+        showToast('❌ ' + (data.message || 'Login failed'));
+      }
+    })
+    .catch(error => {
+      console.error('Login error:', error);
+      showToast('❌ Login failed. Please try again.');
+    });
+  }
+
+  function registerAction() {
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
+    const city = document.getElementById('register-city').value;
+
+    if (!name || !email || !password) {
+      showToast('❌ Please fill in all required fields');
+      return;
+    }
+
+    fetch('/api/auth/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ name, email, password, city })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        closeModal('auth-modal');
+        showPage('dashboard');
+        updateDashboard(data.user);
+        showToast('✅ Account created successfully! Welcome, ' + data.user.name + '.');
+      } else {
+        showToast('❌ ' + (data.message || 'Registration failed'));
+      }
+    })
+    .catch(error => {
+      console.error('Register error:', error);
+      showToast('❌ Registration failed. Please try again.');
+    });
   }
 
   function selectAmount(amt, btn) {
@@ -1710,15 +1879,90 @@
     document.getElementById('impact-preview').innerHTML = `<p>${msg}</p>`;
   }
 
-  function showDonateSuccess() {
+  function showUPIPayment() {
     const custom = document.getElementById('custom-amount').value;
     const amt = custom ? parseInt(custom) : currentDonateAmount;
-    document.getElementById('success-amount').textContent = '₹' + amt;
+    const cause = document.getElementById('donate-cause').value;
+    
+    // Update UPI interface with amount
+    document.getElementById('upi-amount').textContent = '₹' + amt;
+    
+    // Update cause display for success screen
+    const causeNames = {
+      meals: 'Feed the Hungry',
+      trees: 'Plant Trees', 
+      essentials: 'Essentials Kit'
+    };
+    document.getElementById('success-cause').textContent = causeNames[cause] || 'Selected Cause';
+    
     document.getElementById('donate-step1').style.display = 'none';
     document.getElementById('donate-step2').style.display = '';
   }
 
-  function showDashTab(tab) {
+  function completeFakePayment() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      showToast('❌ Please login first');
+      openAuthModal();
+      return;
+    }
+
+    const custom = document.getElementById('custom-amount').value;
+    const amt = custom ? parseInt(custom) : currentDonateAmount;
+    const cause = document.getElementById('donate-cause').value;
+
+    fetch('/api/donations', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify({ cause, amount: amt })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.message === 'Donation successful') {
+        document.getElementById('success-amount').textContent = '₹' + amt;
+        document.getElementById('donate-step2').style.display = 'none';
+        document.getElementById('donate-step3').style.display = '';
+        
+        // Update user data in localStorage
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        user.totalDonated = data.user.totalDonated;
+        user.donationsCount = data.user.donationsCount;
+        user.xp = data.user.xp;
+        user.level = data.user.level;
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        updateDashboard(user);
+        showToast('✅ Payment successful! Thank you for making a difference.');
+      } else {
+        showToast('❌ ' + (data.message || 'Payment failed'));
+      }
+    })
+    .catch(error => {
+      console.error('Payment error:', error);
+      showToast('❌ Payment failed. Please try again.');
+    });
+  }
+
+  function updateDashboard(user) {
+    if (!user) return;
+    
+    // Update stats
+    document.querySelector('#dtab-overview .stat-card:nth-child(1) .value').textContent = '₹' + user.totalDonated;
+    document.querySelector('#dtab-overview .stat-card:nth-child(2) .value').textContent = user.xp;
+    document.querySelector('#dtab-overview .stat-card:nth-child(3) .value').textContent = user.donationsCount;
+    
+    // Update greeting
+    document.querySelector('#dtab-overview h2').textContent = 'Good morning, ' + user.name + ' 👋';
+    
+    // Update level bar
+    const levelNames = ['', 'Beginner', 'Contributor', 'Active Supporter', 'Impact Creator', 'Champion', 'Legend'];
+    document.querySelector('.level-name').textContent = levelNames[user.level] + ' Level ' + user.level;
+    document.querySelector('.xp-count').textContent = user.xp + ' / ' + (user.level * 500 + 500) + ' XP';
+    document.querySelector('.level-bar .progress-fill').style.width = ((user.xp % 500) / 500 * 100) + '%';
+  }
     ['overview','history','badges','gamification'].forEach(t => {
       const el = document.getElementById('dtab-'+t);
       if (el) el.style.display = t === tab ? '' : 'none';
@@ -1746,10 +1990,18 @@
     overlay.addEventListener('click', e => { if (e.target === overlay) overlay.classList.remove('open'); });
   });
 
-  // Animate progress bars on load
-  window.addEventListener('load', () => {
-    setTimeout(() => { document.querySelectorAll('.progress-fill').forEach(el => { const w = el.style.width; el.style.width = '0'; setTimeout(() => el.style.width = w, 100); }); }, 300);
-  });
+  // Initialize app
+  function init() {
+    const token = localStorage.getItem('token');
+    const user = JSON.parse(localStorage.getItem('user') || 'null');
+    
+    if (token && user) {
+      updateDashboard(user);
+    }
+  }
+
+  // Call init on load
+  window.addEventListener('load', init);
 </script>
 
 <!-- ======== USER PROFILE MODAL ======== -->
